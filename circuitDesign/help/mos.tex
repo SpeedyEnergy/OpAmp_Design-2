@@ -1,0 +1,686 @@
+\section{Matlab files related to the MOS transistor}
+\subsection{mosAcmPerimeter}
+\label{sec:mosAcmPerimeter}
+\index{mosAcmPerimeter@\textsf{mosAcmPerimeter}}
+\begin{verbatim}
+ MOSACMPERIMETER computation of the perimeter of a source or drain region
+ 
+    mosAcmPerimeter(ACM, LSWS, LSWG) returns the perimeter of a diffusion region
+    (= source or drain region). This perimeter is computed according to the area 
+    calculation method ACM with the given perimeter of the diffusion region under
+    the gate (argument LSWG) and not under the gate (argument LSWS).
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosAreaPerimeter}
+\label{sec:mosAreaPerimeter}
+\index{mosAreaPerimeter@\textsf{mosAreaPerimeter}}
+\begin{verbatim}
+ MOSAREAPERIMETER computation of areas and perimeters of source and drain 
+  regions of a MOS transistor.
+ 
+    MOS = mosAreaPerimeter(MOS) computes 
+     - area of source and drain regions (fields "ad" and "as"), 
+     - length of the sidewall of the source or drain
+       area which is not under the gate (fields "lsd" and "lss"), 
+     - length of the sidewall of the source or drain area which is under the
+       gate (fields "lgd" and "lgs"), 
+     - "pstot", which is the sum of "lss" and "lgs",
+     - "pdtot", which is the sum of "lsd" and "lgd",
+     - "ps" which is either "pstot" or "pstot - w", depending on the model that
+       is used.
+     - "pd", which is either "pdtot" or "pdtot - w", depending on the model
+       that is used. 
+     These quantities are added as fields to the given MOS transistor if they
+     do not exist yet, else they are not recomputed.
+     To compute these quantities, the transistor must have the following
+     fields: the width <MOS>.w, length of the drain/source diffusion areas not
+     between two poly stripes (fields <MOS>.lsod and <MOS>.lsos, respectively),
+     the length of drain/source diffusion areas between two poly stripes
+     (fields <MOS>.lsogd and <MOS>.lsogs, respectively),
+     the amount of fingers (field <MOS>.nFingers) and the multiplicity
+     <MOS>.mult.
+ 
+     EXAMPLES :
+ 
+     example 1:
+     Mn1 = mosAreaPerimeter(Mn1)
+ 
+     example 2:
+     Mn1.w = 20, Mn1.LSOs = 1, Mn1.LSOd = 1, Mn1.LSOgs = 1, Mn1.LSOgd = 1,
+     Mn1.nFingers = 1, Mn1.mult = 1 
+     Mn1 = mosAreaPerimeter(Mn1)
+     returns Mn1 with the following fields computed
+     Mn1.ad = 20, Mn1.lsd = 22, Mn1.lgd = 20, Mn1.as = 20, Mn1.lss = 22, 
+     Mn1.lgs = 20, Mn1.pstot = 42, Mn1.pdtot = 42
+    
+     example 3:    
+     Mn1.w = 20, Mn1.LSOs = 1, Mn1.LSOd = 1, Mn1.LSOgs = 1, Mn1.LSOgd = 1,
+     Mn1.nFingers = 4, Mn1.mult = 1
+     Mn1 = mosAreaPerimeter(Mn1)
+     returns Mn1 with the following fields computed
+     Mn1.ad = 10, Mn1.lsd = 4, Mn1.lgd = 20, Mn1.as = 15, Mn1.lss = 16,
+     Mn1.lgs = 20, Mn1.pstot = 36, Mn1.pdtot = 24
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosCheckFreq}
+\label{sec:mosCheckFreq}
+\index{mosCheckFreq@\textsf{mosCheckFreq}}
+\begin{verbatim}
+ MOSCHECKFREQ check whether a given operating frequency is higher than fT
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosCheckOpParam}
+\label{sec:mosCheckOpParam}
+\index{mosCheckOpParam@\textsf{mosCheckOpParam}}
+\begin{verbatim}
+ MOSCHECKOPPARAM checks whether a given STRING is an operating point
+    parameter that is supported in the table-based circuit sizing approach.
+ 
+    MOSCHECKOPPARAM(STRING) returns 1 if the given STRING is the name of an 
+    operating point parameter that is supported in the table-base circuit sizing
+    approach. If the STRING does not correspond to the name of a supported
+    parameter, then 0 is returned.
+    A given table may contain only a subset of the supported operating
+    point parameters.
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosCheckSaturation}
+\label{sec:mosCheckSaturation}
+\index{mosCheckSaturation@\textsf{mosCheckSaturation}}
+\begin{verbatim}
+ MOSCHECKSATURATION check whether a transistor operates in the saturation
+     region.
+ 
+     mosCheckSaturation(MOS) gives a warning when transistor MOS is not
+     saturated. This function compares MOS.vds to MOS.vdsat if they exist.
+     When one of these fields does not exist, an error is signaled.
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosCheckWidth}
+\label{sec:mosCheckWidth}
+\index{mosCheckWidth@\textsf{mosCheckWidth}}
+\begin{verbatim}
+ MOSCHECKWIDTH comparison of a transistor width to the critical width
+ 
+    result = mosCheckWidth(MOSNAME, WIDTH, TABLE) returns 0 and gives a warning when
+    the specified WIDTH of the specified MOS transistor with name MOSNAME is below 
+    the critical width of the given TABLE.
+    This critical width can be obtained with tableWcrit(TABLE)
+ 
+    See also tableWcrit
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosCompareDcOp}
+\label{sec:mosCompareDcOp}
+\index{mosCompareDcOp@\textsf{mosCompareDcOp}}
+\begin{verbatim}
+ MOSCOMPAREDCOP comparison of operating point information computed in matlab 
+  and with a circuit simulator
+ 
+   RESULT = mosCompareDcOp(CIRCUIT, DESIGNKIT, SIMULATOR, VERBOSELEVEL,
+   FID) returns a cell array in which each element is a cell array with three
+   elements, the first element being the name of a parameter of interest (see
+   description of the fields of a designkit, see cirDesignkitInit), the element
+   being the average and the maximum of the (unsigned) relative errors between
+   the value of the 
+   parameter under consideration computed in Matlab and with the given SIMULATOR,
+   averaged over all n-MOS and p-MOS transistors in the given CIRCUIT. 
+   For the time being only spectre is supported.
+   The VERBOSELEVEL is either 0, 1 or 2. For values of 1 and 2, some comparison
+   data is written into a given file identifier FID.
+ 
+ 
+   EXAMPLE:
+ 
+   a = mosCompareDcOp(circuit, designkit, 'spectre', 1, 1);
+ 
+  Then a{1} can be an array that looks like
+  a{1}
+ 
+  ans = 
+ 
+   Columns 1 through 5
+ 
+     'idsnmos'    'vgsnmos'    'vdsnmos'    'vsbnmos'    'gmnmos'
+ 
+   Columns 6 through 10
+ 
+     'gmbsnmos'    'gdsnmos'    'vthnmos'    'vdsatnmos'    'ftnmos'
+ 
+   Columns 11 through 15
+ 
+     'idspmos'    'vgspmos'    'vdspmos'    'vsbpmos'    'gmpmos'
+ 
+   Columns 16 through 20
+ 
+     'gmbspmos'    'gdspmos'    'vthpmos'    'vdsatpmos'    'ftpmos'
+ 
+  Further, a{2} is a cell array with the average rel. error values (averaged
+  over all n-MOS transistors and all p-MOS transistors) and a{3} with the
+  maximum value of the relative error.  
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosDiodeVth}
+\label{sec:mosDiodeVth}
+\index{mosDiodeVth@\textsf{mosDiodeVth}}
+\begin{verbatim}
+  computation of vth of a diode connected MOS transistor without body
+  effect.
+  This is done with a fixed point iteration
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosExtValue}
+\label{sec:mosExtValue}
+\index{mosExtValue@\textsf{mosExtValue}}
+\begin{verbatim}
+ MOSEXTVALUE computation of parameters related to the extrinsic 
+ part of a MOS transistor.
+ 
+     value = mosExtValue(NAME, MOS) returns the value of a parameter related
+     to the extrinsic part of a MOS transistor. The NAME of the parameter
+     should be specified as a string. Possible names are
+     cdbE, csbE, as, ad, ps, pd, lsd, lgd, lss, lgs
+ 
+     EXAMPLE :
+ 
+        Mn1.cdbE = mosExtValue('cdbE', Mn1);
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosIntValue}
+\label{sec:mosIntValue}
+\index{mosIntValue@\textsf{mosIntValue}}
+\begin{verbatim}
+ MOSINTVALUE gets the value of a intrinsic MOS parameter 
+ 
+     PARAMVALUE = mosIntValue(ELECPARAM, MOS) returns the
+     value of a MOS operating point parameter ELECPARAM (specified as a string) for
+     transistor MOS. The value is computed
+     in S.I. units.   
+     ELECPARAM must be included in the table of operating point parameter values
+     of a transistor. Possible names for ELECPARAM can be found by running
+     tableDisplay(mosTable(mos))  or a parameter with name PARAM can be
+    checked on its validity using mosCheckOpParam(PARAM).                                           
+ 
+    See also tableDisplay, tableValueWref, mosWidth, tableWref, tableWcrit
+    
+ 
+     EXAMPLE :
+ 
+       ids = mosIntValue('ids', Mn1)
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosIntValueWref}
+\label{sec:mosIntValueWref}
+\index{mosIntValueWref@\textsf{mosIntValueWref}}
+\begin{verbatim}
+ MOSINTVALUEWREF retrieving value of an intrinsic MOS parameter for 
+ a given MOS transistor, assuming its width equals the reference width.
+                                                                           
+    RESULT = mosIntValueWref(PARAM, MOS) returns the value of the 
+    MOS operating point parameter PARAM (specified as a string) for a given MOS
+    transistor.   
+    PARAM must be included in the TABLE of intrinisc values of a transistor
+    of the same type of the given transistor. Possible names for PARAM can be
+    found by running tableDisplay(TABLE) or a parameter with name PARAM can be
+    checked on its validity using mosCheckOpParam(PARAM).
+ 
+    EXAMPLE :                                                                
+ 
+       id = mosIntValueWref('ids', Mn1)                            
+   
+    See also tableDisplay, mosIntValue, mosWidth, tableWref,
+    tableValueWref, mosCheckOpParam
+    
+ 
+ 
+  The value of the parameter is computed by linear interpolation in the 
+  argument table.
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosJuncap}
+\label{sec:mosJuncap}
+\index{mosJuncap@\textsf{mosJuncap}}
+\begin{verbatim}
+ MOSJUNCAP computation of junction capacitance of a source or drain region 
+ of a MOS transistor.
+ 
+     cJunction = mosJuncap(TABLE, VDIFFBULK, AREA, PERIMTOT, W) returns
+     the value of the junction capacitance of a source or drain region for a
+     given type of a MOS transistor, specified by the given TABLE. For the
+     junction one must specify the AREA, the total perimeter PERIMTOT of the
+     drain or source region, the gate width W and the voltage over the
+     junction VDIFFBULK. The latter is the voltage difference between the
+     source or drain region and the bulk (should be positive for an n-MOS and 
+     negative for a p-MOS) 
+ 
+     EXAMPLE :
+ 
+        for a MOS transistor with one finger, a width of 2 micrometer, a
+        length of 1 micrometer for the diffusion areas, and 1 Volt over the
+        junction between the diffusion area of the bulk and a table name N, the
+        function call is
+        cdb = mosJuncap(N, 1, 2e-12, 6e-6, 2e-6);
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosLayoutLengths}
+\label{sec:mosLayoutLengths}
+\index{mosLayoutLengths@\textsf{mosLayoutLengths}}
+\begin{verbatim}
+ MOSLAYOUTLENGTHS computation of lengths of the source/drain diffusion between
+    and not between two poly stripes.
+ 
+  MOS = mosLayoutLengths(MOS, TABLE) computes for the given MOS transistor the
+  lengths of the source/drain diffusion between and not between two poly
+  stripes. This computation is done based on layout rule information, that is
+  stored in the given TABLE, that corresponds to the given MOS transistor. The
+  fields lsos, lsod, lsogs and lsogd of the given MOS transistor are filled
+  with 
+  - the value of the length of the source diffusion not between two poly 
+  stripes (field "lsos"), 
+  - the value of the length of the drain diffusion not between two poly
+  stripes (field "lsod"),
+  - the value of the length of the source diffusion between two poly 
+  stripes (field "lsogs"),
+  - the value of the length of the drain diffusion between two poly 
+  stripes (field "lsogd")
+  Finally, the MOS transistor is returned.
+  The following layout rule data should be present in the field table.Info:
+  - table.Info.wco: width of a contact
+  - table.Info.eactco: extension of active over contact
+  - table.Info.dcopss: distance between contact and poly stripe in the source
+  area 
+  - table.Info.dcopsd: distance between contact and poly stripe in the drain
+  area 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosLsoD}
+\label{sec:mosLsoD}
+\index{mosLsoD@\textsf{mosLsoD}}
+\begin{verbatim}
+ MOSLSOS computation of length of the drain diffusion (not between two poly
+     stripes)
+ 
+  lsod = mosLsoD(WCO, EACTCO, DCOPSD) computes the length of the drain
+  diffusion not between two poly stripes as a function of contact width WCO,
+  the extension of active over contact EACTCO, and the distance between contact
+  and poly stripe in the drain area DCOPSD
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosLsoGd}
+\label{sec:mosLsoGd}
+\index{mosLsoGd@\textsf{mosLsoGd}}
+\begin{verbatim}
+ MOSLSOGD computation of length of the drain diffusion between two poly
+     stripes
+ 
+  lsogd = mosLsoGd(WCO, DCOPSD) computes the length of the drain
+  diffusion between two poly stripes as a function of contact width WCO and
+  the distance between contact and poly stripe in the drain area DCOPSD
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosLsoGs}
+\label{sec:mosLsoGs}
+\index{mosLsoGs@\textsf{mosLsoGs}}
+\begin{verbatim}
+ MOSLSOGS computation of length of the source diffusion between two poly
+     stripes
+ 
+  lsogs = mosLsoGs(WCO, DCOPSS) computes the length of the source
+  diffusion between two poly stripes as a function of contact width WCO and
+  the distance between contact and poly stripe in the source area DCOPSS
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosLsoS}
+\label{sec:mosLsoS}
+\index{mosLsoS@\textsf{mosLsoS}}
+\begin{verbatim}
+ MOSLSOS computation of length of source diffusion (not between two poly
+     stripes)
+ 
+  lsos = mosLsoS(WCO, EACTCO, DCOPSS) computes the length of the source
+  diffusion not between two poly stripes as a function of contact width WCO,
+  the extension of active over contact EACTCO, and the distance between contact
+  and poly stripe in the source area DCOPSS
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosName}
+\label{sec:mosName}
+\index{mosName@\textsf{mosName}}
+\begin{verbatim}
+ MOSNAME returns the name of a given MOS transistor as a string
+ 
+ 
+     NAME = mosName(MOS) returns a string that contains the name of the
+     given MOS transistor.
+ 
+     EXAMPLE :
+   
+       nameMn1 = mosName(Mn1);
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosNfingers}
+\label{sec:mosNfingers}
+\index{mosNfingers@\textsf{mosNfingers}}
+\begin{verbatim}
+ MOSNFINGERS computation of the number of fingers for a MOS transistor.
+ 
+ 
+  MOS = mosNfingers(MOS) computes the number of
+  fingers for a MOS transistor if the field MOS.nFingers does not exist. If the
+  field exists, then nothing is changed. If the field does not exist, then the
+  computed number of fingers is stored in the field MOS.nFingers. 
+  This function can only work if the fields MOS.w and MOS.geo exist. The
+  function always returns an even or odd  number of fingers, depending on the
+  value of MOS.geo. 
+  The function tries to find a fingerwidth between a minimum and a maximum
+  width. These widths are determined as follows: if the fields
+  MOS.minFingerWidth and MOS.maxFingerWidth exist, then these values are used
+  for minimum and maximum width, respectively. If MOS.minFingerWidth does not
+  exist, then the value of Wcrit from the table MOS.table is taken. If
+  MOS.maxFingerWidth does not exist, then the value maxFingerWidth is taken
+  from the base. If the latter does not exist, then an error is given. 
+ 
+  Example:
+ 
+  Mn1 = mosNfingers(Mn1);
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosNsquares}
+\label{sec:mosNsquares}
+\index{mosNsquares@\textsf{mosNsquares}}
+\begin{verbatim}
+ MOSNSQUARES computation of number of squares of source and drain 
+  diffusion for the calculation of extrinsic source and drain resistances of a
+  MOS transistor. 
+ 
+    MOS = mosNsquares(MOS) computes the number of squares of source and drain 
+  diffusion. These quantities are added as the fields "nrd" (# squares of drain
+  diffusion) and "nrs" (idem for source diffusion), respectively, if at least
+  these fields do not exist yet. 
+  To compute these quantities, the transistor must have the following
+  fields: the width <MOS>.w, the length of drain/source diffusion areas between
+  two poly stripes (fields <MOS>.lsogd and <MOS>.lsogs, respectively).
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosOpValues}
+\label{sec:mosOpValues}
+\index{mosOpValues@\textsf{mosOpValues}}
+\begin{verbatim}
+ MOSOPVALUES computation of all operating parameters of a MOS transistor
+ 
+    MOS = mosOpValues(MOS) computes the value of intrinsic and extrinsic
+    operating point parameters (in S.I. units) of a given transistor MOS. The
+    datastructure of the transistor which is specified as an argument is also
+    returned. However, after this function has returned, all fields of the
+    transistor related to intrinsic and extrinsic operating point parameters
+    have been added to the datastructure of the transistor. Existing extrinsic
+    geometry parameters are NOT recomputed. Also, the
+    values of vgb, vgd and vdb are computed (or updated) from vgs, vds and vsb. 
+                                                                           
+    EXAMPLE :                                                                
+ 
+        Mn1 = mosOpValues(Mn1)                          
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosPrintSizesAndOpInfo}
+\label{sec:mosPrintSizesAndOpInfo}
+\index{mosPrintSizesAndOpInfo@\textsf{mosPrintSizesAndOpInfo}}
+\begin{verbatim}
+  MOSPRINTSIZESANDOPINFO print sizes and operating point information of MOS
+  transistors in a circuit and its subcircuits.
+ 
+    mosPrintSizesAndOpInfo(FID, CIRCUIT) prints the sizes and operating point
+    information of the transistors in the given CIRCUIT and its subcircuits to
+    the given file identifier FID. Two file identifiers are automatically
+    available and need not be opened.  They are FID=1 (standard output) and
+    FID=2 (standard error).
+ 
+   See also fopen.
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosTable}
+\label{sec:mosTable}
+\index{mosTable@\textsf{mosTable}}
+\begin{verbatim}
+ MOSTABLE returns the table of operating point parameters from which the
+ intrinsic operating point of a MOS transistor are derived.
+ 
+     TABLE = mosTable(MOS) returns the table (this is a structure) from
+     which the intrinsic operating point parameters of the given MOS
+     transistor are derived. 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosVsbBody}
+\label{sec:mosVsbBody}
+\index{mosVsbBody@\textsf{mosVsbBody}}
+\begin{verbatim}
+ MOSVSBBODY computation of the source voltage of a MOS transistor with body
+ effect
+ 
+     VSB = mosVsbBody(MOS, VGB, VDB, VOV, ESTIMATE) determines the
+     source-bulk voltage VSB of a MOS transistor by using the given TABLE. 
+     A specified value for the overdrive voltage VOV is given as an argument, 
+     as well as a value for the gate-bulk voltage VGB and drain-bulk voltage VDB. 
+ 
+     The voltage VSB is determined by fixed-point iteration. A start value
+     ESTIMATE needs to be given for this iteration.
+ 
+    EXAMPLE:
+     
+       Mn1.vsb = mosVsbBody(Mn1, vdd/2, vdd, 0.2, vdd/2 - 0.2);
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosWidth}
+\label{sec:mosWidth}
+\index{mosWidth@\textsf{mosWidth}}
+\begin{verbatim}
+ MOSWIDTH returns MOS transistor width for a given operating point parameter 
+    
+    W  = mosWidth(ELECPARAM, VALUE, MOS) returns the width W of a MOS
+    transistor. This returned width W is such that a wanted value VALUE for
+    the MOS operating point parameter ELECPARAM (specified as a string) is
+    realized. ELECPARAM must be included in the TABLE of a transistor of the same
+    type. Possible names for PARAM can be found by running tableDisplay on
+    mosTable(mos). If the returned width is below the critical width a warning 
+    is given. If the computed width is below the minimum width for the given 
+    technology, then an error is given.
+ 
+    See also mosTable, tableDisplay, tableWcrit, tableWmin, tableWref
+ 
+    EXAMPLE :
+ 
+      Mn1.w = mosWidth('ids', 0.001, Mn1);
+ 
+      In this example, the width of Mn1 is computed as Mn1.w, based on a
+      specification of 1mA for the drain current of Mn1. It is assumed that the
+      terminal voltages and the length of Mn1 are already determined.
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{mosWriteParams}
+\label{sec:mosWriteParams}
+\index{mosWriteParams@\textsf{mosWriteParams}}
+\begin{verbatim}
+ MOSWRITEPARAMS writes parameters that have been determined in Matlab to a
+   the fields of a structure parStruct
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\newpage

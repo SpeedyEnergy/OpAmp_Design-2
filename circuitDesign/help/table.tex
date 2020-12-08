@@ -1,0 +1,625 @@
+\section{Matlab files related to tables of a MOS transistor}
+\subsection{tableDisplay}
+\label{sec:tableDisplay}
+\index{tableDisplay@\textsf{tableDisplay}}
+\begin{verbatim}
+ TABLEDISPLAY view the parameters that are present in a table for a MOS transistor
+ 
+    tableDisplay(TABLE) displays information contained in the table that has
+    been constructed for a given transistor type.
+    The following information is displayed:
+      1) DIMENSIONS: minimum gate length and width, width for which the table
+         has been constructed (so-called reference width), width below which
+         narrow-channel effects become visible (so-called critical width).
+      2) A list of the input variables and their ranges
+      3) A list of operating point parameters that are stored in the table
+          (gm, ids, cgs, vdsat), .... Some parameters scale proportionally to
+          the transistor width (at least above the critical width), other ones 
+          (e.g. vdsat, vth) do not.
+ 
+    EXAMPLE :
+ 
+      tableDisplay(N) 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableInArray}
+\label{sec:tableInArray}
+\index{tableInArray@\textsf{tableInArray}}
+\begin{verbatim}
+ TABLEINARRAY getting the array of values of an input variable of a MOS table.
+ 
+     VALUE = tableInArray(INPUTVAR, TABLE) returns the array
+     of values of the input variable INPUTVAR for a given TABLE of a MOS
+     transistor.
+ 
+     EXAMPLE :
+ 
+       vgsArray = tableInArray('vgs', N);
+ 
+     See also tableInFinal, tableInInit, tableInValue, tableInStep,
+     tableInLength.
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableInCheckRange}
+\label{sec:tableInCheckRange}
+\index{tableInCheckRange@\textsf{tableInCheckRange}}
+\begin{verbatim}
+ TABLEINCHECKRANGE check whether an input parameter is inside the validity range
+ 
+    tableInCheckRange(INPUTVAR, VALUE, TABLE) tests whether the VALUE of a given
+    input parameter INPUTVAR (specified as a string) is inside the range of
+    validity, i.e. the range that is used to construct the given TABLE for a
+    MOS transistor.
+    The function signals an error if the VALUE is not inside the range of
+    validity.
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableInFinal}
+\label{sec:tableInFinal}
+\index{tableInFinal@\textsf{tableInFinal}}
+\begin{verbatim}
+ TABLEINFINAL getting the final value of an input variable of a MOS table.
+ 
+     VALUE = tableInFinal(INPUTVAR, TABLE) returns the last element of the array
+     of values of the input variable INPUTVAR for a given TABLE of a MOS
+     transistor.
+ 
+     EXAMPLE :
+ 
+       vgsFinal = tableInFinal('vgs', N);
+ 
+     See also tableInInit, tableInArray, tableInValue, tableInStep,
+     tableInLength.
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableInInit}
+\label{sec:tableInInit}
+\index{tableInInit@\textsf{tableInInit}}
+\begin{verbatim}
+ TABLEININIT getting the initial value of an input variable of a MOS table.
+ 
+     VALUE = tableInInit(INPUTVAR, TABLE) returns the first element of the array
+     of values of the input variable INPUTVAR for a given TABLE of a MOS
+     transistor.
+ 
+     EXAMPLE :
+ 
+       vgsInit = tableInInit('vgs', N);
+ 
+     See also tableInFinal, tableInArray, tableInValue, tableInStep,
+     tableInLength.
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableInLength}
+\label{sec:tableInLength}
+\index{tableInLength@\textsf{tableInLength}}
+\begin{verbatim}
+ TABLEINLENGTH getting the number of values of an input variable of a MOS table.
+ 
+     N = tableInLength(INPUTVAR, TABLE) returns the number
+     of values of the input variable INPUTVAR for a given TABLE of a MOS
+     transistor.
+ 
+     EXAMPLE :
+ 
+       nVgs = tableInLength('vgs', N);
+ 
+     See also tableInInit, tableInFinal, tableInArray, tableInValue, tableInStep,
+     tableInLength.
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableInNames}
+\label{sec:tableInNames}
+\index{tableInNames@\textsf{tableInNames}}
+\begin{verbatim}
+ TABLEINNAMES input variables for the table of a MOS transistor
+ 
+    CELLARRAY = tableInNames(TABLE) returns an array of strings that 
+    are the names of the input variables of a given TABLE of intrinsic 
+    operating point parameters of a MOS
+    transistor. The order of these strings also corresponds to the order of the
+    indices in the table values. E.g. when 'vgs' is the second element in the
+    resulting CELLARRAY, then this also means that the second index of the
+    table corresponds to vgs.
+ 
+    EXAMPLE:
+ 
+      stringArray = tableInNames(N);
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableInStep}
+\label{sec:tableInStep}
+\index{tableInStep@\textsf{tableInStep}}
+\begin{verbatim}
+ TABLEINSTEP step between two adjacent values of an input variable of a MOS table.
+ 
+     VALUE = tableInStep(INPUTVAR, TABLE) returns the value of the step
+     of the input variable INPUTVAR for a given TABLE of a MOS
+     transistor. This step can be positive or negative. When the step is not
+     constant, then the function returns NaN.
+ 
+     EXAMPLES :
+ 
+       vgsStep = tableInStep('vgs', N);
+       lgStep = tableInStep('lg', N);
+ 
+        This second example will return NaN.
+ 
+     See also tableInInit, tableInFinal, tableInArray, tableInValue, tableInStep,
+     tableInLength.
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableInValue}
+\label{sec:tableInValue}
+\index{tableInValue@\textsf{tableInValue}}
+\begin{verbatim}
+ TABLEINVALUE gets a particular value from the array of values 
+ of an input variable of a MOS table of intrinsic operating point parameters.
+ 
+     VALUE = tableInValue(INPUTVAR, INDEX, TABLE) returns the element with
+     index INDEX in the array of values of the input variable INPUTVAR in a
+     given TABLE of a MOS transistor.
+ 
+     EXAMPLE :
+ 
+       vgsInter = tableInValue('vgs', 5, N);
+ 
+     See also tableInFinal, tableInInit, tableInArray, tableInStep,
+     tableInLength.
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableLmin}
+\label{sec:tableLmin}
+\index{tableLmin@\textsf{tableLmin}}
+\begin{verbatim}
+ TABLELMIN minimum channel length of a MOS transistor
+ 
+    LMIN = tableLmin(TABLE) returns the value of the minimum
+    channel length that is allowed for the transistor type that is specified by
+    the given TABLE of intrinsic operating point parameters of a MOS transistor.
+ 
+    EXAMPLE :
+ 
+      lmin = tableLmin(N);
+ 
+    See also tableWmin, tableWcrit
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableMaxVdd}
+\label{sec:tableMaxVdd}
+\index{tableMaxVdd@\textsf{tableMaxVdd}}
+\begin{verbatim}
+ TABLEMAXVDD retrieving the maximally allowed VDD for a MOS transistor
+ 
+    VALUE = tableMaxVdd(TABLE) returns the value of the maximally allowed VDD for
+    a MOS transistor that is specified by a given TABLE of intrinsic
+    operating point parameters of a MOS transistor.
+ 
+    EXAMPLE :
+ 
+      vdd = tableMaxVdd(N);
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableModelName}
+\label{sec:tableModelName}
+\index{tableModelName@\textsf{tableModelName}}
+\begin{verbatim}
+ TABLEMODELNAME model name of MOS transistor with which the table values 
+  are computed.
+ 
+    STRING = tableModelName(TABLE) returns the name of the MOS model with which
+    the values in the given TABLE have been computed.
+ 
+    EXAMPLE :
+ 
+      modelname = tableModelName(N);
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableModelParam}
+\label{sec:tableModelParam}
+\index{tableModelParam@\textsf{tableModelParam}}
+\begin{verbatim}
+ TABLEMODELPARAM getting the value of a model parameter from a MOS table
+ 
+    VALUE = tableModelParam(PARAMETER, TABLE) retrieves from the data of a given
+    MOS table TABLE the numerical value of a model parameter that is specified
+    with the string PARAMETER. No unit conversion is performed, which means
+    that modelparameters that are not specified in S.I. units are returned in
+    non-S.I. units.
+ 
+    EXAMPLE :
+ 
+       M1.cjsw = tableModelParam('cjsw', N);
+ 
+     See also tableModelParamNames, tableModelName
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableModelParamNames}
+\label{sec:tableModelParamNames}
+\index{tableModelParamNames@\textsf{tableModelParamNames}}
+\begin{verbatim}
+ TABLEMODELPARAMNAMES list of all names of model parameters 
+ 
+    RESULT = tableModelParamNames(TABLE) returns a cell array of strings. This cell
+    array contains the names of all model parameters that have been defined in
+    the given TABLE of a MOS transistor.
+ 
+    EXAMPLE :
+ 
+     modelParamNames = tableModelParamNames(N);
+ 
+    See also tableModelParam, tableModelName
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tablePre18}
+\label{sec:tablePre18}
+\index{tablePre18@\textsf{tablePre18}}
+\begin{verbatim}
+  preprocessing of the tables REG018N and REG018P of UMC 0.18um CMOS
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tablePreprocess}
+\label{sec:tablePreprocess}
+\index{tablePreprocess@\textsf{tablePreprocess}}
+\begin{verbatim}
+ TABLEPREPROCESS preprocessing of a table of parameters of a MOS
+ transistor.
+ 
+   TABLEPREPROCESS(MOSTABLE, WMIN, LMIN, WREF, WCRIT, VDDMAX, MODELNAME,
+   MODELSTRUCT, TECHNAME) changes a given raw table MOSTABLE, such that it is
+   uniform for every technology. For example, the generated raw table can be 
+   different depending on the MOS model: for a BSIM model, Spectre
+   simulations generate different operating point parameters 
+   (and sometimes with different names), than for a MM11 model.
+   
+   The following fields are added to the MOSTABLE
+     - Input
+     - Model. This contains several model parameters, namely the ones that 
+       are needed for computations in existing functions, such as tox, VTO
+       (if existing, does not exist in MM11), all parameters necessary
+       to calculate junction capacitors for bulk CMOS, ...
+       The model parameters that will be put in this field are the ones
+       that correspond to a field of the structure MODELSTRUCT that is
+       given as an argument to this function. For example, if MODELSTRUCT
+       has a field MODELSTRUCT.tox with value 2e-9, then a field 
+       MOSTABLE.Model.tox will be created and it has a value of 2e-9.
+     - extra fields of MOSTABLE.Info: minimum allowed channel length in meters 
+       and width in meters (= arguments LMIN and WMIN), reference width in
+       meters (argument WREF), critical width in meters (argument WCRIT), 
+       maximum allowed power supply voltage in Volts (argument VDDMAX),
+       name of the model (argument MODELNAME, e.g. 'MOS Model 11') and name
+       of the technology (argument TECHNAME, e.g. 'IMEC CMOS 90 nm')
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableTechName}
+\label{sec:tableTechName}
+\index{tableTechName@\textsf{tableTechName}}
+\begin{verbatim}
+ TABLETECHNAME returns the name of the technology for which the table has
+   been made.
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableTechNode}
+\label{sec:tableTechNode}
+\index{tableTechNode@\textsf{tableTechNode}}
+\begin{verbatim}
+ TABLETECHNODE returns the feature size (as a number in meters) of the ...
+     technology for which the table has been made.
+ 
+   EXAMPLE:
+   for a table corresponding to a 90 nm technology:
+ 
+   tableTechNode(N)
+ 
+   returns 9e-8
+ 
+   (c) IMEC, 2005
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableTechSource}
+\label{sec:tableTechSource}
+\index{tableTechSource@\textsf{tableTechSource}}
+\begin{verbatim}
+ TABLETECHSOURCE returns the name of the company, research center, ... from 
+   which originates technology for which the table has been made.
+ 
+   (c) IMEC, 2005
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableType}
+\label{sec:tableType}
+\index{tableType@\textsf{tableType}}
+\begin{verbatim}
+ TABLETYPE returns the type of a transistor (n or p)
+ 
+    string = tableType(TABLE) returns a string 'n' or 'p' depending on
+    whether the TABLE under consideration refers to an n-MOS or p-MOS
+    transistor. 
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableValueWref}
+\label{sec:tableValueWref}
+\index{tableValueWref@\textsf{tableValueWref}}
+\begin{verbatim}
+ TABLEVALUEWREF retrieving the value of an intrinsic MOS parameter for 
+ the reference width, directly from a given table.
+                                                                           
+    RESULT = mosIntValueWref(PARAM, TABLE, LENGTH, VGS, VDS, VSB) returns
+    the value of the MOS operating point parameter PARAM 
+    (specified as a string) for a given TABLE.   
+    PARAM must be exist as a field of the given TABLE. 
+    Possible names for PARAM can be found by running tableDisplay(TABLE).
+ 
+    EXAMPLE :                                                                
+ 
+       id = tableValueWref('ids', N, 0.18e-6, 0.7, vdd/2, 0)                            
+   
+    See also tableDisplay, mosIntValue, mosWidth, tableWref
+    
+ 
+  The value of the parameter is computed by multidimensional linear 
+  interpolation in the argument TABLE. We programmed the interpolation ourselves.
+  This is much more efficient than using the Matlab function "interpn".
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableWcrit}
+\label{sec:tableWcrit}
+\index{tableWcrit@\textsf{tableWcrit}}
+\begin{verbatim}
+ TABLEWCRIT width of a MOS transistor below which narrow-channel effects play a role 
+ 
+    WCRIT = tableWcrit(TABLE) returns the value of the minimum
+    channel width that is allowed for the transistor type that is specified by
+    the given TABLE. This value is usually smaller than the reference width.
+ 
+    EXAMPLE :
+ 
+      wCrit = tableWcrit(N);
+ 
+    See also tableLmin, tableWref
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableWIndepParamNames}
+\label{sec:tableWIndepParamNames}
+\index{tableWIndepParamNames@\textsf{tableWIndepParamNames}}
+\begin{verbatim}
+ TABLEWINDEPPARAMNAMES returns operating point parameters of a MOS that are 
+ assumed to be width independent. 
+ 
+    stringArray = tableWIndepParamNames(TABLE) returns a cell array of
+    strings with the names of operating point parameters stored in the given
+    TABLE, and that are independent of transistor width above a critical width.
+ 
+    EXAMPLE :
+ 
+     stringArray = tableWIndepParamNames(N);
+ 
+    See also tableWcrit
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableWInverseParamNames}
+\label{sec:tableWInverseParamNames}
+\index{tableWInverseParamNames@\textsf{tableWInverseParamNames}}
+\begin{verbatim}
+ TABLEWINVERSEPARAMNAMES returns operating point parameters of a MOS that are 
+  assumed to be inversely proportional to the transistor width. Currently, this is
+  only the power spectral density of the 1/f noise current source between
+  source and drain ("di2_fn").
+ 
+    stringArray = tableWInverseParamNames(TABLE) returns a cell array of
+    strings with the names of operating point parameters stored in the given
+    TABLE, and that - above a critical width - are proportional to 
+    (transistor width)^(-1)
+ 
+    EXAMPLE :
+ 
+     stringArray = tableWInverseParamNames(N);
+ 
+    See also tableWcrit, tableWIndepParamNames
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableWmin}
+\label{sec:tableWmin}
+\index{tableWmin@\textsf{tableWmin}}
+\begin{verbatim}
+ TABLEWMIN minimum channel width of a MOS transistor
+ 
+    WMIN = tableWmin(TABLE) returns the value of the minimum
+    channel width that is allowed for the transistor type that is specified by
+    the given TABLE. This value is usually smaller than the reference width.
+ 
+    EXAMPLE :
+ 
+      Wmin = tableWmin(N);
+ 
+    See also tableLmin, tableWcrit
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{tableWref}
+\label{sec:tableWref}
+\index{tableWref@\textsf{tableWref}}
+\begin{verbatim}
+ TABLEWREF gets the MOS transistor width with which the table of that MOS 
+ is computed.
+ 
+    W = tableWref(TABLE) returns the width in micrometer of the transistors with
+    which the values in the given TABLE have been computed.
+ 
+    EXAMPLE :
+ 
+       width = tableWref(N);
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\newpage
