@@ -56,11 +56,11 @@ nmos.plotEnable = 0;
 nmos.option = 3; 
 
 %% PMOS
-pmos.plotEnable = 1;
+pmos.plotEnable = 0;
 % 1: gm/gds in function of Vov
 % 2: gm/gds in function of Vgs
 % 3: gm/Ids in function of Vov
-pmos.option = 3; 
+pmos.option = 1; 
 
 %% NMOS
 
@@ -188,7 +188,7 @@ if pmos.option == 2
         Mp7.vth = tableValueWref('vth',PRVT,Mp7.lg,0,Mp7.vds,Mp7.vsb);
         for jj=((-1) * VGS(end)):0.01:0;
             Mp7.vgs = jj;
-            Mp7.vov = Mp7.vgs + Mp7.vth;
+            Mp7.vov = Mp7.vgs - Mp7.vth;
             Mp7	= mosNfingers(Mp7);
             Mp7	= mosOpValues(Mp7);
             result = [result Mp7.gm/Mp7.gds];
@@ -200,7 +200,7 @@ if pmos.option == 2
     xlabel('V_{ov}');
     ylabel('g_{m}/g_{ds}');
     legend('65nm','80nm','100nm','200nm','500nm','1um');
-    title('g_{m}/g_{ds} in function of V_{ov}(w=10L,Vds=-VDD/2=-0.55V). PMOS');
+    title('g_{m}/g_{ds} in function of V_{GS}(w=10L,Vds=-VDD/2=-0.55V). PMOS');
 end
 
 %% Get gm/Ids in function of Vov
@@ -210,7 +210,7 @@ if pmos.option == 3
         Mp7.lg = L(ii);
         Mp7.w = 10*Mp7.lg;
         Mp7.vth = tableValueWref('vth',PRVT,Mp7.lg,0,Mp7.vds,Mp7.vsb);
-        for jj=((-1) * (VGS(end) + Mp7.vth)):0.01:0;
+        for jj=((-1) * (VGS(end) - Mp7.vth)):0.01:0;
             Mp7.vov = jj;
             Mp7.vgs = Mp7.vth + Mp7.vov;
             Mp7	= mosNfingers(Mp7);
@@ -228,13 +228,90 @@ if pmos.option == 3
 end
 end
 
+fgbw = 28e6;
+AvdB = 49;
+Av = 10^(AvdB/20);
+CL = 30e-12;
+pd = 2*pi*fgbw/Av;
+Mp1.gm = 2*pi*fgbw*CL/4;
+
+angle = -(-110+180/pi*atan(2*pi*fgbw/pd));
+p2 = 2*pi*fgbw/tan(angle*pi/180);
+
+Mn6.gm = p2*CL;
+Mp7.vov = -0.2;
+Mp5.vov = Mp7.vov;
+Mp8.vov = Mp7.vov;
+Mn6.lg = 200e-9;
+Mp1.vsb = 0;
+Mp1.lg = 200e-9;
+
+Mp7.vsb = 0;
+Mp8.vsb = 0;
+Mp5.vsb = 0;
+Mp7.lg = 1e-6;
+
+Mp1.vov = -0.4;
+Mn6.vov = 0.17;
+
+Vout_wp = (1.1-0.2 + 0.17)/2;
+Mn6.vsb = 0;
+Mn6.vds = Vout_wp;
+Mn6.vth = tableValueWref('vth', NRVT, Mn6.lg, 0, Mn6.vds, Mn6.vsb);
+Mn6.vgs = Mn6.vov + Mn6.vth;
+Mn6.w = mosWidth('gm', Mn6.gm, Mn6);
+Mn6 = mosNfingers(Mn6);
+Mn6 = mosOpValues(Mn6);
+
+Mp5.vds = Vout_wp - spec.VDD;
+
+Mn4.vsb = 0;
+Mn4.vds = Mn6.vgs;
+Mn4.vgs = Mn4.vds;
+Mn4.lg = 1e-6;
+Mn4.vth = tableValueWref('vth', NRVT, Mn4.lg, Mn4.vgs, Mn4.vds, Mn4.vsb);
+Mn4.vov = Mn4.vgs-Mn4.vth;
+
+Mp1.vds =  Mn6.vgs - (spec.VDD+Mp7.vov);
+Mp1.vth = tableValueWref('vth', PRVT, Mp1.lg, 0, Mp1.vds, Mp1.vsb);
+Mp1.vgs = Mp1.vov + Mp1.vth;
+Mp1.w = mosWidth('gm', Mp1.gm, Mp1);
+Mp1 = mosNfingers(Mp1);
+Mp1 = mosOpValues(Mp1);
+Mp2 = cirElementCopy(Mp1, Mp2);
+
+Mn4.ids = Mp1.ids;
+Mn4.w = mosWidth('ids', Mn4.ids, Mn4);
+Mn4 = mosNfingers(Mn4);
+Mn4 = mosOpValues(Mn4);
+Mn3 = cirElementCopy(Mn4, Mn3);
+
+Mp5.ids = Mn6.ids;
+Mp5.vth = tableValueWref('vth', PRVT, Mp5.lg, 0, Mp5.vds, Mp5.vsb);
+Mp5.vgs = Mp5.vov + Mp5.vth;
+Mp7.vgs = Mp5.vgs;
+Mp8.vgs = Mp5.vgs;
+
+Mp5.w = mosWidth('ids', Mp5.ids, Mp5);
+Mp5 = mosNfingers(Mp5);
+Mp8.w = Mp5.w;
+Mp8 = mosNfingers(Mp8);
+Mp7.w = Mp8.w*2*Mp1.ids/Mn6.ids;
+Mp7 = mosNfingers(Mp7);
+Mp5 = mosOpValues(Mp5);
+
+Mp7.vds = Mp7.vov;
+Mp7 = mosOpValues(Mp7)
+
+Mp8.vds = Mp8.vgs;
+Mp8 = mosOpValues(Mp8)
 
 % %% AI: Fill out the empty variables required to plot the transfer-function.
 % %  meaning of each variable see comment and
 % %  location of nodes see line 31 
 % 
-% AvDC1 = ;  % DC gain 1st stage
-% AvDC2 = ;  % DC gain 2nd stage
+AvDC1 = Mp1.gm/Mp1.gds;  % DC gain 1st stage
+AvDC2 = Mn6.gm/Mn6.gds;  % DC gain 2nd stage
 % C1    = ;  % Capacitance on node 1
 % G1    = ;  % Admittance  on node 1
 % C2    = ;  % Capacitance on node 2
@@ -261,30 +338,30 @@ end
 % disp('======================================');
 % disp('=      Transistors in saturation     =');
 % disp('======================================');
-% if mosCheckSaturation(Mp1)
-% 	fprintf('\nMp1:Success\n')
-% end
-% if mosCheckSaturation(Mp2)
-% 	fprintf('Mp2:Success\n')
-% end
-% if mosCheckSaturation(Mn3)
-% 	fprintf('Mn3:Success\n')
-% end
-% if mosCheckSaturation(Mn4)
-% 	fprintf('Mn4:Success\n')
-% end
-% if mosCheckSaturation(Mp5)
-% 	fprintf('Mp5:Success\n')
-% end
-% if mosCheckSaturation(Mn6)
-% 	fprintf('Mn6:Success\n')
-% end
-% if mosCheckSaturation(Mp7)
-% 	fprintf('Mp7:Success\n')
-% end
-% if mosCheckSaturation(Mp8)
-% 	fprintf('Mp8:Success\n\n')
-% end
+if mosCheckSaturation(Mp1)
+	fprintf('\nMp1:Success\n')
+end
+if mosCheckSaturation(Mp2)
+	fprintf('Mp2:Success\n')
+end
+if mosCheckSaturation(Mn3)
+	fprintf('Mn3:Success\n')
+end
+if mosCheckSaturation(Mn4)
+	fprintf('Mn4:Success\n')
+end
+if mosCheckSaturation(Mp5)
+	fprintf('Mp5:Success\n')
+end
+if mosCheckSaturation(Mn6)
+	fprintf('Mn6:Success\n')
+end
+if mosCheckSaturation(Mp7)
+	fprintf('Mp7:Success\n')
+end
+if mosCheckSaturation(Mp8)
+	fprintf('Mp8:Success\n\n')
+end
 % 
 % 
 % %% Summary of sizes and biasing points (do not modify)
