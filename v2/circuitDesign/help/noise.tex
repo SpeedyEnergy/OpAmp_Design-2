@@ -1,0 +1,187 @@
+\section{Matlab files related to noise calculations}
+\subsection{noiseAddContrib}
+\label{sec:noiseAddContrib}
+\index{noiseAddContrib@\textsf{noiseAddContrib}}
+\begin{verbatim}
+ NOISECONTRIB constructor function for a noise contribution
+
+\end{verbatim}
+
+\newpage
+\subsection{noiseCompute}
+\label{sec:noiseCompute}
+\index{noiseCompute@\textsf{noiseCompute}}
+\begin{verbatim}
+ NOISECOMPUTE computation of the output noise spectral density and other 
+    derived quantities.
+ 
+   NOISE = noiseCompute(CONTRIBARRAY, OUTNAME, OUTTYPE, TF, FREQ) computes the
+   power spectral density at the output of a circuit. This output is specified
+   with a name (string OUTNAME), a type (string OUTTYPE) and a transfer
+   function TF. This transfer function is a structure with the following three
+   fields:  
+     - dcVal: the value of the transfer function for s = jw = 0
+     - poles: an array containing the value of the poles that should be
+              taken into account.
+     - zeros: an array containing the value of the zeros that should be
+              taken into account.
+   The total output power spectral density depends on different
+   contributions, which are given in the array CONTRIBARRAY. Each contribution
+   is a structure, with the datastructure that has been constructed using the
+   function noiseContrib.
+   The units of the resulting power spectral density are
+   A^2/Hz or V^2/Hz, depending on the type of the output of interest. The power
+   spectral density is computed as a function of frequency, which is specified
+   by the argument FREQ. This is an array of frequency points.
+   The results are returned as part of the structure NOISE.
+ 
+   NOISE = noiseCompute(CONTRIBARRAY, OUTNAME, OUTTYPE, TF, FREQ, EQINNAME,
+   EQINTYPE) computes in addition the equivalent input noise power spectral
+   density at the input, which is specified by a string (input argument
+   EQINNAME) and a type (string EQINTYPE), which is either 'v' or 'i'.
+ 
+   NOISE = noiseCompute(CONTRIBARRAY, OUTNAME, OUTTYPE, TF, FREQ, EQINNAME,
+   EQINTYPE, SOURCEINDEX) computes in addition the spot noise figure as a
+   function of frequency. Here, SOURCEINDEX is the index in the array
+   CONTRIBARRAY that corresponds to the noise source of the source impedance.
+ 
+   The datastructure of the return value NOISE is a structure with the
+   following fields:
+ 
+   1. contrib
+      This is an array of contributions: contrib(1), contrib(2),
+      ... contrib(i), ... It is a copy of the argument CONTRIBARRAY, with, for
+      each contribution contrib(i), the addition of the following fields: 
+      - contrib(i).out.psd
+        this is the contribution of the i-th noise source to the power spectral
+        density of the noise at the output;
+      - contrib(i).eqIn.psd
+        this is the contribution of the i-th noise source to the power spectral
+        density of the noise at the output, referred back to the input;
+      - contrib(i).nfLin
+        this is the contribution of the i-th noise source to the noise figure
+        (linear scale, not in dB);
+   2. freq
+      This is an array of frequency points, describing the frequency band over
+      which noise power spectral density and integrated noise are computed
+   3. nContribs
+      number of contributions
+   4. out
+      This is in turn a structure with the following fields:
+       - name
+         this is the name (= string) of the output quantity;
+       - type
+         this is the type (= string) of the output quantity. This is either 'v'
+         (for a voltage) or 'i' (for a current);
+       - psd
+         this is an array with the same length as the field "freq", with, for
+         every corresponding frequency point, the output noise power spectral
+         density;
+   5. eqIn
+      This is a structure that is constructed if equivalent input noise is to
+      be computed. The structure has the following fields:
+       - name
+         this is the name (= string) of the input signal
+       - type
+         this is the type (= string) of the input signal. This is either 'v'
+         (for a voltage) or 'i' (for a current);
+       - psd
+         this is an array with the same length as the field "freq", with, for
+         every corresponding frequency point, the input-referred noise power
+         spectral density
+       - rms
+         square root of the input-referred noise power, which is the integral
+         of the input-referred noise power spectral density over the frequency
+         band of interest, which is specified with "freq"
+   6. tf
+      This is the transfer function, which is a structure with three fields:
+       - dcVal: the value of the transfer function for s = jw = 0
+       - poles: an array containing the value of the poles that should be
+              taken into account.
+       - zeros: an array containing the value of the zeros that should be
+              taken into account.
+   7. nfLin
+      This field is computed when the noise figure is to be computed. It is an
+      array with the same length as the field "freq", with for every
+      corresponding frequency point the noise figure (linear scale)
+ 
+   (c) IMEC, 2005
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{noiseContrib}
+\label{sec:noiseContrib}
+\index{noiseContrib@\textsf{noiseContrib}}
+\begin{verbatim}
+ NOISECONTRIB constructor function for a noise contribution
+
+\end{verbatim}
+
+\newpage
+\subsection{noiseEnterSource}
+\label{sec:noiseEnterSource}
+\index{noiseEnterSource@\textsf{noiseEnterSource}}
+\begin{verbatim}
+ NOISEENTERSOURCE constructor function for a noise source and its contribution 
+     to the total noise 
+ 
+    CONTRIB = NOISEENTERSOURCE(NAME, VALUE, TYPE, OUTNAME, OUTTYPE, TF) returns
+    a structure CONTRIB, that corresponds to data of one single noise
+    source. The structure CONTRIB has the following fields:
+    1. source
+       This has the following fields:
+        - name
+          This is a string, representing the name of the source (e.g. 'Mp1
+          thermal')
+        - val
+          This is the value of the noise source. This can be a tabulated value
+          (e.g. Mp1.di2_id) or an equivalent input noise voltage (then one
+          should use Mp1.di2_id / Mp1.gm^2)
+        - type
+          This is a string, which is either 'flicker' or 'thermal'
+    2. tf
+       This is the transfer function from the noise source to the circuit
+       output. This circuit output is specified by its name, which is the
+       argument OUTNAME (a string, e.g. 'vout'), and its type OUTTYPE. The type
+       is either 'v' (when the output of interest is a voltage) or 'i' (when
+       the output of interest is a current).
+    3. out
+       This has two fields initially:
+       - name
+         This is the name of the circuit output (= OUTNAME, see above).
+       - type
+         This is the type of the circuit output ('v' or 'i', see above)
+    When the noise power spectral density or noise figure is computed (see
+    function noiseCompute), then extra fields are added to CONTRIB.
+    - the field out gets as extra field "psd"
+    - if the equivalent input noise power spectral density is computed with
+      noiseCompute, then the field eqIn is added. See noiseCompute for more
+      details.
+    - if the spot noise figure is computed with noiseCompute, then the field
+    "nfLin" is added. See noiseCompute for more details.
+
+\end{verbatim}
+
+\newpage
+\subsection{noisePlot}
+\label{sec:noisePlot}
+\index{noisePlot@\textsf{noisePlot}}
+\begin{verbatim}
+ NOISEPLOT plotting of noise power spectral densities or spot noise figure
+ 
+  HANDLE = noisePlot(NOISE, INOUT) returns a handle or an array of handles to a
+  plot of the noise power spectral density at the output or referred to the
+  input, or the spot noise figure as a function of frequency. The input
+  argument is a structure NOISE, which contains a field "freq" as well as the
+  power spectral densities of interest or the spot noise figure. A description
+  of the structure NOISE is given in noiseCompute and noiseEnterSource. in, out, inout
+  all is default,  0 means only the total, [1 2 3] means that only
+  contributions #1, #2 and #3 are plotted. 
+
+\end{verbatim}
+
+\newpage
+\newpage

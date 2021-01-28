@@ -1,0 +1,70 @@
+Circuit: * D:\Facultate\VUB_sem1\Analog Electronics\AE\v2\LTSpice\final_project.asc
+
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning:  Acde = 0.0146993 is too small.
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning:  Acde = 0.0146993 is too small.
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning:  Acde = 0.0146993 is too small.
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Direct Newton iteration for .op point succeeded.
+Semiconductor Device Operating Points:
+                        --- BSIM4 MOSFETS ---
+Name:      mn6         mn3         mn4         mp5         mp2
+Model: n_11_sprvt  n_11_sprvt  n_11_sprvt  p_11_sprvt  p_11_sprvt
+Id:      9.63e-04    7.50e-05    7.50e-05   -9.63e-04   -7.50e-05
+Vgs:     2.95e-01    2.94e-01    2.94e-01   -4.11e-01   -2.77e-01
+Vds:     2.70e-01    2.94e-01    2.95e-01   -8.30e-01   -3.02e-01
+Vbs:     0.00e+00    0.00e+00    0.00e+00    0.00e+00    0.00e+00
+Vth:     1.81e-01    7.67e-02    7.67e-02   -2.11e-01   -2.78e-01
+Vdsat:   8.24e-02    1.15e-01    1.15e-01   -1.79e-01   -6.89e-02
+Gm:      1.73e-02    1.02e-03    1.02e-03    7.95e-03    1.41e-03
+Gds:     6.60e-04    3.77e-05    3.77e-05    1.49e-04    5.58e-05
+Gmb      1.32e-03    6.33e-05    6.33e-05    7.12e-04    1.08e-04
+Cbd:     4.54e-14    7.71e-15    7.71e-15    8.53e-14    2.31e-14
+Cbs:     5.11e-14    8.78e-15    8.78e-15    1.47e-13    3.02e-14
+
+Name:      mp1         mp7         mp8
+Model: p_11_sprvt  p_11_sprvt  p_11_sprvt
+Id:     -7.50e-05   -1.50e-04   -1.50e-04
+Vgs:    -2.77e-01   -4.11e-01   -4.11e-01
+Vds:    -3.02e-01   -5.03e-01   -4.11e-01
+Vbs:     0.00e+00    0.00e+00    0.00e+00
+Vth:    -2.78e-01   -2.07e-01   -2.07e-01
+Vdsat:  -6.89e-02   -1.81e-01   -1.82e-01
+Gm:      1.41e-03    1.24e-03    1.24e-03
+Gds:     5.57e-05    3.52e-05    4.53e-05
+Gmb      1.08e-04    1.10e-04    1.09e-04
+Cbd:     2.31e-14    1.65e-14    1.78e-14
+Cbs:     3.02e-14    2.44e-14    2.49e-14
+
+
+
+Date: Mon Jan 25 00:33:24 2021
+Total elapsed time: 0.071 seconds.
+
+tnom = 27
+temp = 27
+method = trap
+totiter = 34
+traniter = 0
+tranpoints = 0
+accept = 0
+rejected = 0
+matrix size = 30
+fillins = 14
+solver = Normal
+Matrix Compiler1: 2.81 KB object code size
+Matrix Compiler2:     232 opcodes

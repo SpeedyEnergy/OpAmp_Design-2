@@ -1,0 +1,789 @@
+\section{Matlab files related to the circuit level}
+\subsection{cirAllowedPrintFields}
+\label{sec:cirAllowedPrintFields}
+\index{cirAllowedPrintFields@\textsf{cirAllowedPrintFields}}
+\begin{verbatim}
+ CIRALLOWEDPRINTFIELDS returns a list names of the fields of a circuit
+     element of type ELTYPE, that can be dumped into/modified in a circuit
+     simulation file. 
+ 
+     See also cirInit
+ 
+     EXAMPLE:
+ 
+     cirAllowedPrintFields(circuit, 'nmos')
+ 
+     This returns the list {'w', 'lg', 'ad', 'as', 'pd', 'ps', ...
+     'nFingers', 'lsos', 'lsod', 'lsogs', 'lsogd', 'mult'}
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirChangePrintNames}
+\label{sec:cirChangePrintNames}
+\index{cirChangePrintNames@\textsf{cirChangePrintNames}}
+\begin{verbatim}
+ CIRCHANGEPRINTNAMES adapts the list of fields that will be written into a 
+     circuit simulation file.
+ 
+     cirChangePrintNames(CIRCUIT, ELTYPE, NAMELIST, PRINTNAMELIST) modifies two
+     cell arrays:
+     1. the one that contains the parameters of a circuit element of a given
+     type ELTYPE (must be a string) is set equal to the argument NAMELIST;
+     2. the one that contains for each of these parameters the string that is
+     written into the simulation file, is set equal to the argument
+     PRINTNAMELIST. paramFields and the paramPrintNames, which
+     are strings that are the fieldnames of a circuit element of type ELTYPE
+     when this circuit element is defined with cirElementDef.
+ 
+     This function changes the fields circuit.defaults.(eltype).fieldValues{5}
+     and circuit.defaults.(eltype).fieldValues{6}. If this function is called,
+     it must be done before any circuit element is defined.
+ 
+     See also cirInit, cirElementDef, cirDefaultValues. 
+ 
+     EXAMPLE:
+     
+    cir = cirChangePrintNames(cir, 'nmos', {'w', 'lg', 'nFingers'}, ...
+      {'Wnom', 'Lnom', 'FOLD'})
+ 
+    With this example, we determine for circuit "cir" that in the circuit simulation file which
+    will be written or modified, the width (w), the length (lg) and the number
+    of fingers of an n-MOS will be written/modified. For example, in a circuit
+    netlist (Spectre format) that contains n-MOS transistor Mn1, for which we
+    have computed in Matlab w=10e-6, lg=0.2e-6 and nFingers = 5, the above
+    example would yield a line in the circuit simulation file of the form
+ 
+    Mn1 (drain gate source bulk) modelname Wnom=10e-6 Lnom=0.2e-6 FOLD=5
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirCheckEltype}
+\label{sec:cirCheckEltype}
+\index{cirCheckEltype@\textsf{cirCheckEltype}}
+\begin{verbatim}
+ CIRCHECKELTYPE check whether the specified string is a valid element type.
+ 
+   cirCheckEltype(STRING) returns nothing if the string corresponds to a valid
+   element type. Otherwise, an error is signaled. Valid element types are
+   'nmos', 'pmos', 'res' (for resistor), 'cap' (for capacitor), 'v' (for
+   voltage source), 'i' (for current source) and subcircuit ('subckt').
+   These names are case sensitive.
+ 
+   EXAMPLE :
+  
+       checkEltype('nmos')
+          returns nothing, since the element type exists.
+       checkEltype('NMOS')
+           returns an error.
+ 
+  See also cirInit
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirCheckInChoice}
+\label{sec:cirCheckInChoice}
+\index{cirCheckInChoice@\textsf{cirCheckInChoice}}
+\begin{verbatim}
+ CIRCHECKINCHOICE defines every field of a structure of design choices as a ...
+     variable in the base workspace and copies this structure to a field of 
+     the given circuit
+ 
+    CIRCUIT = CIRCHECKINCHOICE(CIRCUIT, CHOICE) adds the field CHOICE to the
+    given CIRCUIT. These fields have the same contents as in the variable
+    CHOICE. Further, each field of CHOICE is assigned to new variables in the
+    base workspace. The name of each new variable is the name of the
+    corresponding field.
+ 
+    Examples:
+ 
+    Assume there is a structure "choice" in the base workspace, with
+      choice.Vdd.val = 1;
+      choice.Mn1.vgs = 0.5;
+    while there exists a circuit "ota".
+    Then a call like
+ 
+    ota = cirCheckInChoice(ota, choice)
+ 
+    will have the following effects:
+    1. the variable "ota" has a new field "choice" and
+       ota.choice.Vdd.val = 1;
+       ota.choice.Mn1.vgs = 0.5;
+    2. new variables are created, namely
+       Vdd.val 
+       Mn1.vgs
+       Their value is 1 and 0.5, respectively.
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirDefaultNames}
+\label{sec:cirDefaultNames}
+\index{cirDefaultNames@\textsf{cirDefaultNames}}
+\begin{verbatim}
+ CIRDEFAULTNAMES lists the fields names that are initialized when a circuit 
+ element is defined.
+ 
+     LIST = cirDefaultNames(CIRCUIT, ELTYPE) returns a cell array of
+     strings that are the fieldnames of a circuit element of type ELTYPE
+     when this circuit element is defined with cirElementDef.
+ 
+     See also cirInit, cirElementDef, cirDefaultValues. 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirDefaultValues}
+\label{sec:cirDefaultValues}
+\index{cirDefaultValues@\textsf{cirDefaultValues}}
+\begin{verbatim}
+ CIRDEFAULTVALUES lists the default values of the fields that are initialized 
+ when a circuit element is defined.
+ 
+     LIST = cirDefaultValues(CIRCUIT, ELTYPE) returns a cell array with the
+     default values to which the fields of a circuit element of type ELTYPE
+     are initialized when this circuit element is defined with cirElementDef.
+ 
+     See also cirInit, cirElementDef, cirDefaultNames. 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirDesignkitInit}
+\label{sec:cirDesignkitInit}
+\index{cirDesignkitInit@\textsf{cirDesignkitInit}}
+\begin{verbatim}
+  The field printParamTuple is a cell array that is constructed
+  as follows. It consists of groups of three elements. The first element of
+  each group is a string that corresponds to a circuit element type. The second
+  element contains a list of strings that correspond to the parameters that
+  can be printed to or modified in a circuit simulation file. The third
+  element is a list of the same length as the second element. Every element
+  in this list is a string that is used in the simulation file for the value
+  of the corresponding parameter of the first element. For example, for a
+  resistor, the first element is 'res'. If now the second element is {'val'}
+  and  the third element is {'r'}, then the field "val" of
+  a resistor is represented by "r" (this corresponds to the Spectre syntax).
+  The possible strings in the second elements of each trio of this list should
+  belong to the fields circuit.allowedPrintFields.res,
+  circuit.allowedPrintFields.cap, ... 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirElementCopy}
+\label{sec:cirElementCopy}
+\index{cirElementCopy@\textsf{cirElementCopy}}
+\begin{verbatim}
+ CIRELEMENTCOPY copies a circuit element to another one.
+ 
+     DESTINATION = cirElementCopy(SOURCE, DESTINATION) copies a circuit
+     element SOURCE to another circuit element DESTINATION. By this copy
+     operation, all fields except for the name field are copied from the
+     SOURCE element to the DESTINATION element. It is required that the
+     element types of SOURCE and DESTINATION correspond. 
+ 
+ 
+     EXAMPLES:
+ 
+     Mn1b = cirElementCopy(Mn1a, Mn1b);
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirElementDef}
+\label{sec:cirElementDef}
+\index{cirElementDef@\textsf{cirElementDef}}
+\begin{verbatim}
+ CIRELEMENTDEF definition of a circuit element.
+ 
+     CIRCUIT = cirElementDef(CIRCUIT, ELTYPE, ELEMENTNAME) adds a circuit
+     element to the datastructure of the given CIRCUIT. This function changes
+     the datastructure of the given circuit, which is returned. The circuit
+     element needs to be specified by a name ELEMENTNAME, which should be a
+     string and by its element type ELTYPE, which should also be a string.
+     The circuit element is added as a field to the circuit, such as
+     CIRCUIT.ELEMENTNAME. This is in turn a structure, which will have
+     different fields depending on the element type. Two fields are already
+     defined in this function, namely CIRCUIT.ELEMENTNAME.eltype and
+     CIRCUIT.ELEMENTNAME.name, which are filled with the strings ELTYPE and
+     ELEMENTNAME, respectively.
+     Further, the field nElements of the given CIRCUIT is increased with one,
+     the field CIRCUIT.(ELTYPELIST) is augmented with the ELEMENTNAME, and the
+     field CIRCUIT.n(ELTYPE) is augmented with one. For example, for an n-MOS
+     transistor Mn1, eltype is 'nmos', and the field CIRCUIT.nmosList is
+     extended with the name 'Mn1', and the field CIRCUIT.nnmos is augmented
+     with one. 
+ 
+     For the circuit element itself, the field "parent" is defined and it is
+     equal to the name of the circuit. 
+ 
+     In addition to the fields eltype and name, some other fields, that are 
+     specific for each element type (see cirDefaultNames(CIRCUIT, ELTYPE)), 
+     are already defined and initialized with default values.
+     These default values can be overridden during initialization
+     by specifying extra arguments to cirElementDef in addition to the three
+     arguments CIRCUIT, ELTYPE and ELEMENTNAME. If no extra arguments are
+     specified, then default values are used to initialize the fields of 
+     cirDefaultNames(CIRCUIT, ELTYPE). Else, when default values need to be 
+     overridden, the syntax is as follows:
+     CIRCUIT = cirElementDef(CIRCUIT, ELTYPE, ELEMENTNAME, 'fieldname', value,
+     'fieldname', value, ...)
+     This means that the fieldname (string) has to be specified as an argument,
+     immediately followed by its value as the next argument. 
+ 
+     See also cirElementsCheckIn, cirDefaultNames, cirDefaultValues.
+     
+     EXAMPLES:
+ 
+     cir = cirElementDef(cir, 'nmos', 'Mn1')
+ 
+          This example defines n-MOS transistor Mn1 and takes default values
+          for the fields lg, w, table, paramFields, paramPrintNames, lsos,
+          lsod, mult, lsogs, lsogd, mult.
+ 
+     cir = cirElementDef(cir, 'nmos', 'Mn1', 'lg', 2e-6)
+ 
+         This example defines n-MOS transistor Mn1. The channel length lg is
+         initialized to 2 micrometer, while the other fields w, table, 
+         paramFields, paramPrintNames, lsos, lsod, mult, lsogs, lsogd, mult 
+         are initialized to their default value.
+ 
+    cir = cirElementDef(cir, 'nmos', 'Mn3', 'paramFields', {nFingers})
+ 
+        This example defines n-MOS transistor Mn3. The field
+        "paramField" is initialized with {nFingers}. This means that only
+        the value field "nFingers" will be printed to the circuit simulation
+        file. The other fields are initialized with their default value.
+ 
+   cir = cirElementDef(cir, 'nmos', Mn4, 'paramFields', {gm, lg, w})
+        This will give an error, since "gm" is not a parameter that can be
+        specified as one that will be printed to the circuit simulation file.
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirElementOfType}
+\label{sec:cirElementOfType}
+\index{cirElementOfType@\textsf{cirElementOfType}}
+\begin{verbatim}
+ CIRELEMENTOFTYPE returns a list of elements of a given type.
+ 
+     ELEMENTLIST = cirElementOfType(CIRCUIT, ELTYPE) returns a cell array of
+     circuit elements of a given type ELTYPE (specified as a string), that
+     have been defined in the given CIRCUIT.
+ 
+     See also cirInit, cirDefaultNames, cirDefaultValues.
+     
+     EXAMPLES:
+ 
+     nmosList = cirElementOfType(cir, 'nmos')
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirElementsCheckIn}
+\label{sec:cirElementsCheckIn}
+\index{cirElementsCheckIn@\textsf{cirElementsCheckIn}}
+\begin{verbatim}
+ Definition of circuit elements for a given circuit.
+ 
+   CIRELEMENTSCHECKIN(CIRCUIT, ELEMENTLIST, TOP) defines in the given CIRCUIT
+   for a circuit element with name '<name>', a field CIRCUIT.<name>. This field
+   is initialized as a circuit element of a certain type, using the function
+   cirElementDef. The following types of circuit elements are allowed:
+   voltage sources (type "v"), current sources (type "i"), n-MOS transistors
+   (type "nmos"), p-MOS transistors (type "pmos"), capacitors (type "cap"),
+   resistors (type "res"), inductors (type "ind") and subcircuits (type
+   "subckt"). The circuit elements must be specified with the argument
+   ELEMENTLIST, which is a structure with the following fields:
+   - if independent voltage sources must be defined, then ELEMENTLIST should
+     have a field v. If so, then ELEMENTLIST.v should be a cell array, that
+     contains the names of all independent voltage sources. If no independent
+     voltage sources have to be defined, then either the field ELEMENTLIST.v is
+     not defined, or it is equal to the empty cell array {}; 
+   - if independent current sources must be defined, then ELEMENTLIST should
+     have a field i. If so, then ELEMENTLIST.i should be a cell array, that
+     contains the names of all independent current sources. If no independent
+     current sources have to be defined, then either the field ELEMENTLIST.i is
+     not defined, or it is equal to the empty cell array {};
+   - if n-MOS transistors must be defined, then ELEMENTLIST should have a field
+     nmos. If so, then ELEMENTLIST.nmos should be a cell array, that
+     contains the names of all n-MOS transistors. If no n-MOS transistors have
+     to be defined, then either the field ELEMENTLIST.nmos is not defined, or
+     it is equal to the empty cell array {}; 
+   - idem for the circuit elements of type "pmos", "cap", "res", "ind" and
+     "subckt".
+ 
+   If the function CIRELEMENTSCHECKIN is called for the top circuit (which is
+   always the case for a circuit without hierarchy), then the argument TOP must
+   have a nonzero value. In this case, in addition to defining circuit elements
+   of the form CIRCUIT.<name>, the variable <name> is also copied to the base
+   workspace. This has been provided for easier manipulation of the circuit
+   elements without too much typing overhead and for a better readibility of
+   the code. For example for a MOS transistor with name 'Mn1' in the circuit
+   with name 'opamp', manipulating the variable Mn1 in the base workspace, is
+   more elegant than having to manipulate opamp.Mn1.
+   Important remark: if the variable <name> is used for the sizing of the
+   circuit, then, after the sizing of <name>, all fields of <name> should be
+   copied to CIRCUIT.<name>. This is done with the function
+   cirElementsCheckOut. 
+ 
+   See also cirElementDef, cirElementsCheckOut
+ 
+   EXAMPLES: 
+ 
+   Let's define an elementary OTA. The name of the corresponding variable will
+   be "elOta". First we define a list of circuit elements, grouped per element
+   type: 
+      elementList.v = {'Vdd', 'VinN', 'VinP', 'Vbias'};
+      elementList.nmos = {'Mn1a', 'Mn1b', 'Mnbias'};
+      elementList.pmos = {'Mp1a', 'Mp1b'};
+      elementList.i = {};
+
+\end{verbatim}
+
+\newpage
+\subsection{cirElementsCheckOut}
+\label{sec:cirElementsCheckOut}
+\index{cirElementsCheckOut@\textsf{cirElementsCheckOut}}
+\begin{verbatim}
+ CIRELEMENTSCHECKOUT copies circuit element with name <x> to <circuit>.<x>
+ 
+  See also cirElementsCheckIn
+ 
+   EXAMPLES:
+ 
+  we have a circuit with name 'commSource'. The circuit elements are
+  commSource.Mn1, commSource.Rl, commSource.Vdd and commSource.Vin
+  With the function cirElementsCheckIn these elements have been copied to the
+  variables Mn1, Rl, Vdd and Vin. In the Matlab code that sizes these elements,
+  the fields of these elements get meaningful values, e.g. Vin.val gets a
+  value, ...
+  After this sizing we can use cirElementsCheckOut to copy the fields of Mn1,
+  Rl, Vdd and Vin back to commSource.Mn1, commSource.Rl, commSource.Vdd and
+  commSource.Vin. This is done by the command
+ 
+  commSource = cirElementsCheckOut(commSource)
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirInit}
+\label{sec:cirInit}
+\index{cirInit@\textsf{cirInit}}
+\begin{verbatim}
+ CIRINIT initialization of a circuit
+ 
+  circuit = cirInit(NAME, TITLE, HIERARCHY, ELEMENTLIST, ...
+    SPECS (optional), DESIGNCHOICES (optional), DESIGNKITNAME (optional),
+    SIMULFILE (optional), NMOSTABLE (optional), ... 
+    PMOSTABLE (optional), SIMULATOR (optional), ...
+    PARAMSIMULSKELFILE (optional)) 
+    initializes a datastructure for a circuit. This new datastructure is
+    returned. If no hierarchy is built in the circuit, then the arument
+    HIERARCHY must have the value 'top'. In a hierarchical circuit, this
+    argument must have this value as well. If a subcircuit is initialized, then
+    the argument HIERARCHY must have the value 'sub'.
+ 
+    The datastructure of a circuit is a structure with the following fields:
+ 
+      1. name: a string, which is specified as the argument NAME of this
+         initialization function.
+      
+      2. title: a title string, which is specified as the argument TITLE 
+         of this initialization function.
+ 
+      3. simulFile: a string that represents the name of the file to which the
+         values will be written for the different circuit parameters that are
+         determined with Matlab. This string is specified as the argument
+         SIMULFILE to this initialization function.
+ 
+      4. simulSkeletonFile: this field is only used for circuit simulations in 
+         SmartSpice. It is a string representing the name of the file that
+         contains the part of a circuit simulation file that does not contain
+         any parameters that are determined in Matlab.  Therefore, it is an optional
+         argument SIMULSKELFILE, that does not need to be specified when other 
+         simulators are used. 
+      
+      5. defaults: a structure that contains default values for the different
+         circuit elements that are supported. These default values are used when a
+         circuit element is initialized. For a nMOS and pMOS transistor,
+         default values are used for 
+         - channel length (field "lg")
+         - channel width (field "w")
+         - table of intrinsic operating point parameters (field "table")
+         - length of drain/source diffusion areas not between two
+          poly stripes (fields "lsod" and "lsos", respectively)
+         - length of drain/source diffusion areas between two poly stripes
+          (fields "lsogd" and "lsogs", respectively)
+         - the amount of fingers (field "nFingers")
+         - the multiplicity (field "mult")
+         - the parameters that will be written
+           to a circuit simulation file (field "paramFields"). This is a cell
+           array of strings, each of them being a field of a MOS transistor
+           structure (e.g. "lg"). The value of these fields will be determined
+           in the Matlab design plan.
+         - the printnames that will be used for the parameters in the field
+           paramFields of the transistor (field "paramPrintNames"). This is also
+           a cell array of strings. This cell array has the same length as the
+           cell array "paramFields". The printnames are used for the names of
+           the parameters that are written into the circuit simulation
+           file. E.g. the printname of the length of a MOS transistor could be
+           'l'. In that case, a parameter would be made of the form
+           '<mos><glue string>l', e.g. m1_l
+      For a voltage source, current source, capacitor, inductor and resistor, 
+      default values are used for 
+        - value (field "val")
+        - field "paramFields" (similar meaning as for a MOS transistor)
+        - field "paramPrintNames" (similar meaning as for a MOS transistor)
+ 
+      6. allowedPrintFields: an array of strings (cell array) that contains the
+      names of the fields that can be passed to/changed in a circuit simulation
+      file. For example, for a MOS transistor this list is
+      {'w', 'lg', 'ad', 'as', 'pd', 'ps', 'nFingers', 'lsos', 'lsod', ...
+       'lsogs', 'lsogd', 'mult', 'nrs', 'nrd'}.
+      For a resistor, capacitor, inductor, voltage source and current source,
+      this list contains one element, namely 'val'.
+ 
+      7. nElements: number of circuit elements that already have been defined.
+ 
+      8. fields that each represent a circuit element that belongs to the
+         circuit. At initialization there is no such field. During the Matlab
+         program these fields are filled. E.g., when an n-MOS transistor m1
+         is defined (see function cirElementDef) then there will be a field
+         "m1" in the circuit.
+         The following types of elements are supported: nmos, pmos, resistor,
+         capacitor, voltage source, current source (see function
+         cirCheckEltype). Note that not every circuit element that appears in
+         the netlist of the circuit, needs to be defined in Matlab. Only those
+         elements need to be defined for which some parameters are computed in
+         Matlab. For example, if the power supply voltage is fixed, then the
+         corresponding voltage source does not need to be added to the
+         datastructure. 
+     
+      9. fields that represent for each circuit element type a list of the
+         elements of that type and the length of that list:
+         - nmosList and nnmos
+         - pmosList and npmos
+         - resList and nres, capList and ncap, indList and nind, vList and
+           nv, iList and ni, subcktList and nsubckt
+ 
+      10. designkit
+ 
+      11. if the argument SPECS has been specified as an argument that differs
+          from 0 or from an empty string, then the circuit that is initialized
+          gets a field for its specifications. This field is meant to be a
+          structure. This is useful to store with the circuit sizing.
+          Example: 
+               if a structure "spec" has the following fields
+                   spec.gain = 5
+                   spec.currentConsumption = 1e-3;
+               then the inclusion of "spec" in the argument list of cirInit to
+               initialize a circuit with name "amp", will result in the field 
+               amp.spec and the value will be
+                   amp.spec.gain = 5
+                   and
+                   amp.spec.currentConsumption = 1e-3;
+ 
+     12. if the argument DESIGNCHOICES has been specified as an argument that differs
+          from 0 or from an empty string, then the circuit that is initialized
+          gets a field for its design choices. This field is meant to be a
+          structure. This is useful to store with the circuit sizing.
+          Example: 
+               if a structure "choice" has the following fields
+                   choice.Mn1.lg = 1e-6
+                   choice.Ibias.val = 1e-6
+               then the inclusion of "choice" in the argument list of cirInit to
+               initialize a circuit with name "amp", will result in the field 
+               amp.choice and the value will be
+                   amp.choice.Mn1.lg = 1e-6
+                   and
+                   amp.choice.Ibias.val = 1e-6
+              
+ 
+  See also cirSubcktInit, cirElementDef, cirElementOfType, cirCheckElType,
+  cirSupportedEltypes, cirDesignkitInit 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirMosCheckSaturation}
+\label{sec:cirMosCheckSaturation}
+\index{cirMosCheckSaturation@\textsf{cirMosCheckSaturation}}
+\begin{verbatim}
+  checking all MOS transistors for saturation
+ 
+  CIRMOSCHECKSATURATION(CIRCUIT, FID) checks all n-MOS and p-MOS transistors of
+  a circuit whether or not they are saturated. The function writes a warning to
+  the file identifier FID for every transistor that is not saturated
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirPrintHeader}
+\label{sec:cirPrintHeader}
+\index{cirPrintHeader@\textsf{cirPrintHeader}}
+\begin{verbatim}
+ CIRPRINTHEADER printing of a header for a circuit that is going to be sized
+ 
+   CIRPRINTHEADER(CIRCUIT) prints a header for a circuit to the
+   screen. This header contains the title of the circuit, the actual date and
+   time when this function is called, and the name of the user who is calling
+   that function.
+   
+   CIRPRINTHEADER(CIRCUIT, FID) prints the header to the file
+   associated with file identifier FID. FID is an integer file identifier
+   obtained from FOPEN. It can also be 1 for standard output (the screen) or 2
+   for standard error.
+ 
+   CIRPRINTHEADER(CIRCUIT, FID, SPECS) prints in addition the
+   set of specs of the circuit. The variable SPECS must be a structure. All
+   fields of this structure are printed.
+ 
+  CIRPRINTHEADER(CIRCUIT, FID, SPECS, CHOICES) prints in
+  addition the design choices that are made during the sizing of the circuit. 
+   The variable CHOICES must be a structure. All fields of this structure are
+   printed. 
+ 
+ 
+   See also FOPEN.
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirSimulFile}
+\label{sec:cirSimulFile}
+\index{cirSimulFile@\textsf{cirSimulFile}}
+\begin{verbatim}
+ CIRSIMULFILE retrieves the circuit simulation file
+ 
+    FILENAME = cirSimulFile(CIRCUIT) returns a string that contains for the
+    given CIRCUIT the name of the file that will be used to verify the design
+    with Matlab of this CIRCUIT.
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirSimulSkelFile}
+\label{sec:cirSimulSkelFile}
+\index{cirSimulSkelFile@\textsf{cirSimulSkelFile}}
+\begin{verbatim}
+ CIRSIMULSKELFILE retrieves the circuit simulation file
+ 
+    FILENAME = cirSimulSkelFile(CIRCUIT) returns a string that contains for the
+    given CIRCUIT the name of the file that contains the part of the circuit
+    simulation input file that is fixed (i.e. contains no elements that are
+    determined with Matlab).
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirSupportedEltypes}
+\label{sec:cirSupportedEltypes}
+\index{cirSupportedEltypes@\textsf{cirSupportedEltypes}}
+\begin{verbatim}
+ CIRSUPPORTEDELTYPES lists the element types that are supported in the set of
+   Matlab functions for circuit sizing
+ 
+   RESULT = CIRSUPPORTEDELTYPES returns a cell array that contains the element
+   types that are supported.
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirWriteParam}
+\label{sec:cirWriteParam}
+\index{cirWriteParam@\textsf{cirWriteParam}}
+\begin{verbatim}
+ CIRWRITEPARAM write a parameter statement for the given simulator
+ 
+     cirWriteParam(FID, SIMULATOR, PARAM, VALUE) writes a parameter
+     statement with the appropriate syntax for the given SIMULATOR for the
+     given PARAMETER (should be a string). The VALUE of that parameter
+     should also be given as an argument. The parameter statement is
+     written to the given file identifier FID
+ 
+     See also fopen, cirWriteParams
+ 
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirWriteParams}
+\label{sec:cirWriteParams}
+\index{cirWriteParams@\textsf{cirWriteParams}}
+\begin{verbatim}
+ CIRWRITEPARAMS writes parameters that have been determined in Matlab to a
+ circuit simulation file for a given SIMULATOR.
+  
+    Supported simulators are smartspice, hspice, spectre
+ 
+ 
+    For smartspice we put everything into one file in order to avoid .include
+    statements, which seem to be buggy in smartspice. Therefore, we dump the
+    parameters in a temporary file, and in the end we combine this file and
+    the skeleton file into the simulation file.
+ 
+    For HSPICE, the simulation file is just a set of lines with .param
+    statements. The skeleton file is not used here.
+ 
+    For spectre, we replace in a circuit netlist the values of the circuit
+    elements in the top circuit and in the subcircuits. The skeleton file is
+    not used neither here.
+ 
+   See also cirWriteParamsSpice and cirWriteParamsSpectre
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirWriteParamsSpectre}
+\label{sec:cirWriteParamsSpectre}
+\index{cirWriteParamsSpectre@\textsf{cirWriteParamsSpectre}}
+\begin{verbatim}
+ CIRWRITEPARAMS writes parameters that have been determined in Matlab to a
+ circuit simulation file for spectre. We replace
+    in a circuit netlist the values of the circuit elements in the top circuit
+    and in the subcircuits. We make use of the function scsSetPar. This
+    function performs a substitution in the simulation file circuit.simulFile,
+    using a structure of parameters. This structure is constructed in this
+    function cirWriteParamsSpectre. The structure can be saved in a .mat file,
+    which can be given as a second argument.
+ 
+    See also scsSetPar
+ 
+   EXAMPLE:
+  
+   cirWriteParamsSpectre(circuit)
+   Here the substitution is made without saving the parameter structure.
+ 
+   cirWriteParamsSpectre(circuit, 'parStruct.mat')
+   Here the parameter structure is saved to a file parStruct.mat
+ 
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\subsection{cirWriteParamsSpice}
+\label{sec:cirWriteParamsSpice}
+\index{cirWriteParamsSpice@\textsf{cirWriteParamsSpice}}
+\begin{verbatim}
+ CIRWRITEPARAMSSPICE writes parameters that have been determined in Matlab to 
+  a circuit simulation file for Spice. Supported Spice versions are  
+   smartspice and hspice. 
+ 
+ 
+    For smartspice we put everything into one file in order to avoid .include
+    statements, which seem to be buggy in smartspice. Therefore, we dump the
+    parameters in a temporary file, and in the end we combine this file and
+    the skeleton file into the simulation file.
+    For HSPICE, the simulation file is just a set of lines with .param
+    statements. The skeleton file is not used here.
+ 
+   (c) IMEC, 2004
+   IMEC confidential 
+ 
+
+\end{verbatim}
+
+\newpage
+\newpage

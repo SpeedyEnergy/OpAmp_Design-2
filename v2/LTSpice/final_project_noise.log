@@ -1,0 +1,51 @@
+Circuit: * D:\Facultate\VUB_sem1\Analog Electronics\AE\v2\LTSpice\final_project_noise.asc
+
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning:  Acde = 0.0146993 is too small.
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning:  Acde = 0.0146993 is too small.
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning:  Acde = 0.0146993 is too small.
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Warning: No WPE as none of SCA, SCB, SCC, SC is given and/or SC not positive.
+Warning: LTspice uses BSIM4 version 4.6.1. Your model specified an unrecognized version number: 4.5000e+00
+Direct Newton iteration for .op point succeeded.
+
+out_totnvrms: INTEG(v(onoise))=0.000160862 FROM 1e+006 TO 1e+011
+out_mp1nvrms: INTEG(v(mp1))=9.01476e-005 FROM 1e+006 TO 1e+011
+out_mp2nvrms: INTEG(v(mp2))=9.02487e-005 FROM 1e+006 TO 1e+011
+out_mp7nvrms: INTEG(v(mp7))=3.77047e-006 FROM 1e+006 TO 1e+011
+out_mp8nvrms: INTEG(v(mp8))=9.08542e-006 FROM 1e+006 TO 1e+011
+out_mp5nvrms: INTEG(v(mp5))=6.80722e-006 FROM 1e+006 TO 1e+011
+out_mn6nvrms: INTEG(v(mn6))=1.01716e-005 FROM 1e+006 TO 1e+011
+out_mn4nvrms: INTEG(v(mn4))=7.09424e-005 FROM 1e+006 TO 1e+011
+out_mn3nvrms: INTEG(v(mn3))=6.47634e-005 FROM 1e+006 TO 1e+011
+out_rmnvrms: INTEG(v(rm))=1.14341e-005 FROM 1e+006 TO 1e+011
+
+
+Date: Wed Jan 06 22:54:55 2021
+Total elapsed time: 0.124 seconds.
+
+tnom = 27
+temp = 27
+method = trap
+totiter = 34
+traniter = 0
+tranpoints = 0
+accept = 0
+rejected = 0
+matrix size = 30
+fillins = 14
+solver = Normal
+Matrix Compiler1:     158 opcodes
+Matrix Compiler2:     232 opcodes
